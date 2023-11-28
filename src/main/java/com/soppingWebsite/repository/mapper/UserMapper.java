@@ -1,6 +1,6 @@
 package com.soppingWebsite.repository.mapper;
 
-import com.soppingWebsite.model.User;
+import com.soppingWebsite.model.CustomUser;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -8,12 +8,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
-public class UserMapper implements RowMapper<User> {
+public class UserMapper implements RowMapper<CustomUser> {
 
     @Override
-    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public CustomUser mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-        User user = new User(
+        CustomUser customUser = new CustomUser(
             rs.getLong("user_id"),
             rs.getString("first_name"),
             rs.getString("last_name"),
@@ -24,7 +24,7 @@ public class UserMapper implements RowMapper<User> {
             rs.getString("password")
         );
 
-        return user;
+        return customUser;
     }
 
 }

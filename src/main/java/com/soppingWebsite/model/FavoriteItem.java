@@ -1,37 +1,37 @@
 package com.soppingWebsite.model;
 
-public class FavoriteProduct {
+public class FavoriteItem {
 
-    private Long favoriteProductId;
-    private Long productId;
+    private Long favoriteItemId;
+    private Long itemId;
     private Long userId;
 
-    public FavoriteProduct() {}
+    public FavoriteItem() {}
 
-    public FavoriteProduct(Long favoriteProductId, Long productId, Long userId) {
-        this.favoriteProductId = favoriteProductId;
-        this.productId = productId;
+    public FavoriteItem(Long favoriteItemId, Long itemId, Long userId) {
+        this.favoriteItemId = favoriteItemId;
+        this.itemId = itemId;
         this.userId = userId;
     }
 
-    public Long getFavoriteProductId() {
-        return favoriteProductId;
+    public Long getFavoriteItemId() {
+        return favoriteItemId;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Long getItemId() {
+        return itemId;
     }
 
     public Long getUserId() {
         return userId;
     }
 
-    public void setFavoriteProductId(Long favoriteProductId) {
-        this.favoriteProductId = favoriteProductId;
+    public void setFavoriteItemId(Long favoriteItemId) {
+        this.favoriteItemId = favoriteItemId;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     public void setUserId(Long userId) {

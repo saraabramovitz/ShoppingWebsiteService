@@ -1,8 +1,8 @@
 package com.soppingWebsite.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.soppingWebsite.model.FavoriteProduct;
-import com.soppingWebsite.service.FavoriteProductService;
+import com.soppingWebsite.model.FavoriteItem;
+import com.soppingWebsite.service.FavoriteItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,45 +11,45 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/favoriteProduct")
-public class FavoriteProductController {
+@RequestMapping("/favoriteItem")
+public class FavoriteItemController {
     @Autowired
-    private FavoriteProductService favoriteProductService;
+    private FavoriteItemService favoriteItemService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createFavoriteProduct(@RequestBody FavoriteProduct favoriteProduct) throws JsonProcessingException {
+    public ResponseEntity<?> createFavoriteItem(@RequestBody FavoriteItem favoriteItem) throws JsonProcessingException {
         try {
-            favoriteProductService.createFavoriteProduct(favoriteProduct);
-            return ResponseEntity.ok("Favorite product created successfully");
+            favoriteItemService.createFavoriteItem(favoriteItem);
+            return ResponseEntity.ok("Favorite item created successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/delete/{favoriteProductId}")
-    public ResponseEntity<?> deleteFavoriteProductById(@PathVariable Long favoriteProductId){
+    @DeleteMapping("/delete/{favoriteItemId}")
+    public ResponseEntity<?> deleteFavoriteItemById(@PathVariable Long favoriteItemId){
         try {
-            favoriteProductService.deleteFavoriteProductById(favoriteProductId);
-            return ResponseEntity.ok("Favorite product deleted successfully");
+            favoriteItemService.deleteFavoriteItemById(favoriteItemId);
+            return ResponseEntity.ok("Favorite item deleted successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
 
-    @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<?> deleteFavoriteProductByUserId(@PathVariable Long userId){
+    @DeleteMapping("/delete/byUserId/{userId}")
+    public ResponseEntity<?> deleteFavoriteItemByUserId(@PathVariable Long userId){
         try {
-            favoriteProductService.deleteFavoriteProductByUserId(userId);
-            return ResponseEntity.ok("Favorite product of user " + userId + "have been deleted successfully");
+            favoriteItemService.deleteFavoriteItemByUserId(userId);
+            return ResponseEntity.ok("Favorite items of user " + userId + " have been deleted successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
 
-    @GetMapping("/all/{userId}")
-    public ResponseEntity<?> getAllFavoriteProductsByUserId(@PathVariable Long userId){
+    @GetMapping("/all/byUserId/{userId}")
+    public ResponseEntity<?> getAllFavoriteItemsByUserId(@PathVariable Long userId){
         try {
-            return ResponseEntity.ok(favoriteProductService.getAllFavoriteProductsByUserId(userId));
+            return ResponseEntity.ok(favoriteItemService.getAllFavoriteItemsByUserId(userId));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }

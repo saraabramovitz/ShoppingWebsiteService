@@ -1,6 +1,6 @@
 package com.soppingWebsite.repository;
 
-import com.soppingWebsite.model.User;
+import com.soppingWebsite.model.CustomUser;
 import com.soppingWebsite.repository.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -19,33 +19,17 @@ public class UserRepositoryImpl implements UserRepository{
     public static final String USER_TABLE_NAME = "user";
 
     @Override
-    public void createUser(User user) {
+    public void createUser(CustomUser customUser) {
         String sql = "INSERT INTO " + USER_TABLE_NAME + " (first_name, last_name, email, phone, address, username, password) values (?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(
             sql,
-            user.getFirstName(),
-            user.getLastName(),
-            user.getEmail(),
-            user.getPhone(),
-            user.getAddress(),
-            user.getUsername(),
-            user.getPassword()
-        );
-    }
-
-    @Override
-    public void updateUser(User user) {
-        String sql = "UPDATE " + USER_TABLE_NAME + " SET first_name=?, last_name=?, email=?, phone=?, address=?, username=?, password=? WHERE user_id=?";
-        jdbcTemplate.update(
-            sql,
-            user.getFirstName(),
-            user.getLastName(),
-            user.getEmail(),
-            user.getPhone(),
-            user.getAddress(),
-            user.getUsername(),
-            user.getPassword(),
-            user.getUserId()
+            customUser.getFirstName(),
+            customUser.getLastName(),
+            customUser.getEmail(),
+            customUser.getPhone(),
+            customUser.getAddress(),
+            customUser.getUsername(),
+            customUser.getPassword()
         );
     }
 
@@ -56,7 +40,7 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public User getUserById(Long userId) {
+    public CustomUser getUserById(Long userId) {
         String sql = "SELECT * FROM " + USER_TABLE_NAME + " WHERE user_id =?";
         try {
             return jdbcTemplate.queryForObject(sql, userMapper, userId);
@@ -66,7 +50,7 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public CustomUser getUserByEmail(String email) {
         String sql = "SELECT * FROM " + USER_TABLE_NAME + " WHERE email =?";
         try {
             return jdbcTemplate.queryForObject(sql, userMapper, email);
@@ -76,7 +60,7 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public CustomUser getUserByUsername(String username) {
         String sql = "SELECT * FROM " + USER_TABLE_NAME + " WHERE username =?";
         try {
             return jdbcTemplate.queryForObject(sql, userMapper, username);

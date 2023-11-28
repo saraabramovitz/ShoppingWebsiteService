@@ -1,12 +1,11 @@
 package com.soppingWebsite.repository;
 
-import com.soppingWebsite.model.User;
+import com.soppingWebsite.model.CustomUser;
 
 public interface UserRepository {
-    void createUser(User user);
-    void updateUser(User user);
+    void createUser(CustomUser customUser);
     void deleteUserById(Long userId);
-    User getUserById(Long userId);
-    User getUserByEmail(String email);
-    User getUserByUsername(String username);
+    CustomUser getUserById(Long userId);
+    CustomUser getUserByEmail(String email);
+    CustomUser getUserByUsername(String username);
 }

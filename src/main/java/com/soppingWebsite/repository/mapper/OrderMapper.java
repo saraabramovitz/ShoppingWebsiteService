@@ -2,7 +2,6 @@ package com.soppingWebsite.repository.mapper;
 
 import com.soppingWebsite.model.Order;
 import com.soppingWebsite.model.modelEnum.OrderStatus;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,6 @@ public class OrderMapper implements RowMapper<Order> {
             rs.getLong("user_order_id"),
             rs.getLong("user_id"),
             rs.getString("shipping_address"),
-            rs.getDouble("total_price"),
             rs.getTimestamp("order_date").toLocalDateTime().toLocalDate(),
             OrderStatus.valueOf(rs.getString("status"))
         );

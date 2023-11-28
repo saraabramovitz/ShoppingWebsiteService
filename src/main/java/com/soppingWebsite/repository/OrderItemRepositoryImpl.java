@@ -1,7 +1,11 @@
 package com.soppingWebsite.repository;
 
-import com.soppingWebsite.model.OrderProduct;
-import com.soppingWebsite.repository.mapper.OrderProductMapper;
+import com.soppingWebsite.model.Item;
+import com.soppingWebsite.model.OrderItem;
+import com.soppingWebsite.model.OrderItemRequest;
+import com.soppingWebsite.model.OrderItemResponse;
+import com.soppingWebsite.repository.mapper.OrderItemMapper;
+import com.soppingWebsite.repository.mapper.OrderItemResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,66 +14,122 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class OrderProductRepositoryImpl implements OrderProductRepository{
+public class OrderItemRepositoryImpl implements OrderItemRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
     @Autowired
-    OrderProductMapper orderProductMapper;
+    OrderItemMapper orderItemMapper;
+    @Autowired
+    OrderItemResponseMapper orderItemResponseMapper;
 
-    public static final String ORDER_PRODUCT_TABLE_NAME = "order_product";
+    public static final String ORDER_ITEM_TABLE_NAME = "order_item";
 
     @Override
-    public void createOrderProduct(OrderProduct orderProduct) {
-        String sql = "INSERT INTO " + ORDER_PRODUCT_TABLE_NAME + " (user_order_id, product_id, quantity) values (?, ?, ?)";
+    public void createOrderItem(OrderItemRequest orderItemRequest, Long orderId) {
+        String sql = "INSERT INTO " + ORDER_ITEM_TABLE_NAME + " (user_order_id, item_id) values (?, ?);";
         jdbcTemplate.update(
             sql,
-            orderProduct.getOrderProductId(),
-            orderProduct.getProductId(),
-            orderProduct.getQuantity()
+            orderId,
+            orderItemRequest.getItemId()
         );
     }
 
     @Override
-    public void updateOrderProduct(OrderProduct orderProduct) {
-        String sql = "UPDATE " + ORDER_PRODUCT_TABLE_NAME + " SET quantity WHERE order_product_id=?";
+    public void updateOrderItemQuantity (Long orderItemId, Integer quantity) {
+        String sql = "UPDATE " + ORDER_ITEM_TABLE_NAME + " SET quantity=? WHERE order_item_id=?;";
         jdbcTemplate.update(
             sql,
-            orderProduct.getQuantity(),
-            orderProduct.getOrderProductId()
+            quantity,
+            orderItemId
         );
     }
 
     @Override
-    public void deleteOrderProductById(Long orderProductId) {
-        String sql = "DELETE FROM " + ORDER_PRODUCT_TABLE_NAME + " WHERE order_product_id=?";
-        jdbcTemplate.update(sql, orderProductId);
+    public void deleteOrderItemById(Long orderItemId) {
+        String sql = "DELETE FROM " + ORDER_ITEM_TABLE_NAME + " WHERE order_item_id=?;";
+        jdbcTemplate.update(sql, orderItemId);
     }
 
     @Override
-    public void deleteOrderProductByUserId(Long userId) {
-        String sql = "DELETE * FROM " + ORDER_PRODUCT_TABLE_NAME + " WHERE user_order_id=?";
+    public void deleteOrderItemByOrderId(Long orderId) {
+        String sql = "DELETE FROM " + ORDER_ITEM_TABLE_NAME + " WHERE user_order_id=?;";
+        jdbcTemplate.update(sql, orderId);
+    }
+
+    @Override
+    public void deleteOrderItemByUserId(Long userId) {
+        String sql = "DELETE FROM " + ORDER_ITEM_TABLE_NAME + " WHERE user_order_id IN (SELECT user_order_id FROM user_order WHERE user_id = ?);";
         jdbcTemplate.update(sql, userId);
+
     }
 
     @Override
-    public OrderProduct getOrderProductById(Long orderProductId) {
-        String sql = "SELECT * FROM " + ORDER_PRODUCT_TABLE_NAME + " WHERE order_product_id=?";
+    public OrderItem getOrderItemById(Long orderItemId) {
+        String sql = "SELECT * FROM " + ORDER_ITEM_TABLE_NAME + " WHERE order_item_id=?;";
         try {
-            return jdbcTemplate.queryForObject(sql, orderProductMapper, orderProductId);
+            return jdbcTemplate.queryForObject(sql, orderItemMapper, orderItemId);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
     @Override
-    public List<OrderProduct> getOrderProductsByUserId(Long userId) {
-        String sql = "SELECT * FROM " + ORDER_PRODUCT_TABLE_NAME + " WHERE user_id = ?";
-        return jdbcTemplate.query(sql, orderProductMapper, userId);
+    public List<OrderItemResponse> getOrderItemsByOrderId(Long orderId) {
+        String sql = "SELECT " +
+                "order_item.order_item_id, " +
+                "order_item.item_id, " +
+                "order_item.user_order_id, " +
+                "item.item_name, " +
+                "item.item_image, " +
+                "item.price, " +
+                "order_item.quantity " +
+                "FROM " + ORDER_ITEM_TABLE_NAME + " " +
+                "JOIN item ON order_item.item_id = item.item_id " +
+                "WHERE order_item.user_order_id = ?;";
+        return jdbcTemplate.query(sql, orderItemResponseMapper, orderId);
+    }
+
+
+    @Override
+    public Item getItemIdByOrderItemId(Long orderItemId) {
+        return null;
     }
 
     @Override
-    public List<OrderProduct> getOrderProductsByOrderId(Long orderId) {
-        String sql = "SELECT * FROM " + ORDER_PRODUCT_TABLE_NAME + " WHERE user_order_id = ?";
-        return jdbcTemplate.query(sql, orderProductMapper, orderId);
+    public OrderItem getOrderItemByOrderIdAndItemId(Long orderId, Long itemId) {
+        String sql = "SELECT * FROM " + ORDER_ITEM_TABLE_NAME + " WHERE user_order_id=? and item_id=?;";
+        try {
+            return jdbcTemplate.queryForObject(sql, orderItemMapper, orderId, itemId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+
     }
-}
+
+    @Override
+    public List<OrderItem> getOrderItemsByUserId(Long userId) {
+        String sql = "SELECT order_item.* " + " FROM " + ORDER_ITEM_TABLE_NAME + " " +
+        "JOIN user_order ON order_item.user_order_id = user_order.user_order_id " +
+        "WHERE user_order.user_id = ?;";
+        return jdbcTemplate.query(sql, orderItemMapper, userId);
+    }
+
+    @Override
+    public List<OrderItemResponse> getOrderItemsByTempOrder(Long userId) {
+        String sql = "SELECT " +
+            "order_item.order_item_id, " +
+            "order_item.item_id, " +
+            "order_item.user_order_id, " +
+            "item.item_name, " +
+            "item.item_image, " +
+            "item.price, " +
+            "order_item.quantity " +
+            "FROM  " + ORDER_ITEM_TABLE_NAME + " " +
+            "JOIN user_order ON order_item.user_order_id = user_order.user_order_id " +
+            "JOIN item ON order_item.item_id = item.item_id " +
+            "WHERE user_order.status = ? AND user_order.user_id = ?;";
+        return jdbcTemplate.query(sql, orderItemResponseMapper, "TEMP", userId);
+    }
+
+
+    }

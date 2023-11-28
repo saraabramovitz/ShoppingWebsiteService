@@ -1,32 +1,32 @@
 package com.soppingWebsite.model;
 
-public class Product {
-    Long productId;
-    String productName;
-    String productImage;
-    Double price;
-    Long stock;
+public class Item {
+    private Long itemId;
+    private String itemName;
+    private String itemImage;
+    private Double price;
+    private Long stock;
 
-    public Product() {}
+    public Item() {}
 
-    public Product(Long productId, String productName, String productImage, Double price, Long stock) {
-        this.productId = productId;
-        this.productName = productName;
-        this.productImage = productImage;
+    public Item(Long itemId, String itemName, String itemImage, Double price, Long stock) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.itemImage = itemImage;
         this.price = price;
         this.stock = stock;
     }
 
-    public Long getProductId() {
-        return productId;
+    public Long getItemId() {
+        return itemId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getItemName() {
+        return itemName;
     }
 
-    public String getProductImage() {
-        return productImage;
+    public String getItemImage() {
+        return itemImage;
     }
 
     public Double getPrice() {
@@ -37,16 +37,16 @@ public class Product {
         return stock;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
     }
 
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
+    public void setItemImage(String itemImage) {
+        this.itemImage = itemImage;
     }
 
     public void setPrice(Double price) {

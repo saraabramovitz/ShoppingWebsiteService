@@ -1,57 +1,54 @@
 package com.soppingWebsite.service;
 
-import com.soppingWebsite.model.Product;
-import com.soppingWebsite.repository.ProductRepository;
+import com.soppingWebsite.model.Item;
+import com.soppingWebsite.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ItemServiceImpl implements ItemService {
 
     @Autowired
-    ProductRepository productRepository;
+    ItemRepository itemRepository;
 
     @Override
-    public void createProduct(Product product) {
-        if(product.getProductId() != null) {
+    public void createItem(Item item) {
+        if(item.getItemId() != null) {
             throw new IllegalArgumentException("Invalid id.");
         }
-        productRepository.createProduct(product);
+        itemRepository.createItem(item);
     }
 
     @Override
-    public void updateProduct(Product product) {
-        if(productRepository.getProductById(product.getProductId()) == null) {
-            throw new IllegalArgumentException("Product does not exist.");
+    public void updateItem(Item item) {
+        if(itemRepository.getItemById(item.getItemId()) == null) {
+            throw new IllegalArgumentException("Item does not exist.");
         }
-        productRepository.updateProduct(product);
+        itemRepository.updateItem(item);
     }
 
     @Override
-    public void deleteProductById(Long productId) {
-        if(productRepository.getProductById(productId) == null) {
-            throw new IllegalArgumentException("Product does not exist.");
+    public void deleteItemById(Long itemId) {
+        if(itemRepository.getItemById(itemId) == null) {
+            throw new IllegalArgumentException("Item does not exist.");
         }
-        productRepository.deleteProductById(productId);
+        itemRepository.deleteItemById(itemId);
     }
 
     @Override
-    public Product getProductById(Long productId) {
-        if(productRepository.getProductById(productId) == null) {
-            throw new IllegalArgumentException("Product does not exist.");
-        }
-        return productRepository.getProductById(productId);
+    public Item getItemById(Long itemId) {
+        return itemRepository.getItemById(itemId);
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.getAllProducts();
+    public List<Item> getAllItems() {
+        return itemRepository.getAllItems();
     }
 
     @Override
-    public List<Product> getProductsContainingSearchText(String searchText) {
-        return productRepository.getProductsContainingSearchText(searchText);
+    public List<Item> getItemsContainingSearchText(String searchText) {
+        return itemRepository.getItemsContainingSearchText(searchText);
     }
 }

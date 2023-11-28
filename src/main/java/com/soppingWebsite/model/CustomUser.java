@@ -1,6 +1,6 @@
 package com.soppingWebsite.model;
 
-public class User {
+public class CustomUser {
 
     private Long userId;
     private String firstName;
@@ -11,9 +11,9 @@ public class User {
     private String username;
     private String password;
 
-    public User() {}
+    public CustomUser() {}
 
-    public User(Long userId, String firstName, String lastName, String email, String phone, String address, String username, String password) {
+    public CustomUser(Long userId, String firstName, String lastName, String email, String phone, String address, String username, String password) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;

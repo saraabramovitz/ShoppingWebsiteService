@@ -1,8 +1,8 @@
-//package com.userLogin.security.service;
+package com.soppingWebsite.security.service;
 
-//import com.userLogin.security.model.AuthenticationRequest;
-//import com.userLogin.security.model.AuthenticationResponse;
+import com.soppingWebsite.security.model.AuthenticationRequest;
+import com.soppingWebsite.security.model.AuthenticationResponse;
 
-//public interface AuthenticationService {
-//    AuthenticationResponse createAuthenticationToken(AuthenticationRequest authenticationRequest) throws Exception;
-//}
+public interface AuthenticationService {
+    AuthenticationResponse createAuthenticationToken(AuthenticationRequest authenticationRequest) throws Exception;
+}

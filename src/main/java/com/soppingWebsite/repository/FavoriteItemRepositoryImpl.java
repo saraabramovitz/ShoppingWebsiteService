@@ -1,7 +1,8 @@
 package com.soppingWebsite.repository;
 
-import com.soppingWebsite.model.FavoriteProduct;
-import com.soppingWebsite.repository.mapper.FavoriteProductMapper;
+import com.soppingWebsite.model.FavoriteItem;
+import com.soppingWebsite.model.FavoriteItemResponse;
+import com.soppingWebsite.repository.mapper.FavoriteItemResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,51 +11,68 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class FavoriteProductRepositoryImpl implements FavoriteProductRepository{
+public class FavoriteItemRepositoryImpl implements FavoriteItemRepository {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
     @Autowired
-    FavoriteProductMapper favoriteProductMapper;
+    FavoriteItemResponseMapper favoriteItemResponseMapper;
 
-    public static final String FAVORITE_PRODUCT_TABLE_NAME = "favorite";
+    public static final String FAVORITE_ITEM_TABLE_NAME = "favorite_item";
 
 
     @Override
-    public void createFavoriteProduct(FavoriteProduct favoriteProduct) {
-        String sql = "INSERT INTO " + FAVORITE_PRODUCT_TABLE_NAME + " (user_id, product_id) values (?, ?)";
+    public void createFavoriteItem(FavoriteItem favoriteItem) {
+        String sql = "INSERT INTO " + FAVORITE_ITEM_TABLE_NAME + " (user_id, item_id) values (?, ?)";
         jdbcTemplate.update(
             sql,
-            favoriteProduct.getUserId(),
-            favoriteProduct.getProductId()
+            favoriteItem.getUserId(),
+            favoriteItem.getItemId()
         );
     }
 
     @Override
-    public void deleteFavoriteProductById(Long favoriteProductId) {
-        String sql = "DELETE FROM " + FAVORITE_PRODUCT_TABLE_NAME + " WHERE favorite_id=?";
-        jdbcTemplate.update(sql, favoriteProductId);
+    public void deleteFavoriteItemById(Long favoriteItemId) {
+        String sql = "DELETE FROM " + FAVORITE_ITEM_TABLE_NAME + " WHERE favorite_item_id=?";
+        jdbcTemplate.update(sql, favoriteItemId);
     }
 
     @Override
-    public void deleteFavoriteProductByUserId(Long userId) {
-        String sql = "DELETE * FROM " + FAVORITE_PRODUCT_TABLE_NAME + " WHERE user_id=?";
+    public void deleteFavoriteItemByUserId(Long userId) {
+        String sql = "DELETE FROM " + FAVORITE_ITEM_TABLE_NAME + " WHERE user_id=?";
         jdbcTemplate.update(sql, userId);
     }
 
     @Override
-    public FavoriteProduct getFavoriteProductById(Long favoriteProductId) {
-        String sql = "SELECT * FROM " + FAVORITE_PRODUCT_TABLE_NAME + " WHERE favorite_id=?";
-        try {
-            return jdbcTemplate.queryForObject(sql, favoriteProductMapper, favoriteProductId);
+    public FavoriteItemResponse getFavoriteItemById(Long favoriteItemId) {
+        String sql = "SELECT favorite_item.favorite_item_id, " +
+                "favorite_item.user_id, " +
+                "favorite_item.item_id, " +
+                "item.item_name, " +
+                "item.item_image, " +
+                "item.price, " +
+                "item.stock " +
+                "FROM favorite_item " +
+                "JOIN item ON favorite_item.item_id = item.item_id " +
+                "WHERE favorite_item.favorite_item_id = ?";        try {
+            return jdbcTemplate.queryForObject(sql, favoriteItemResponseMapper, favoriteItemId);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
     @Override
-    public List<FavoriteProduct> getAllFavoriteProductsByUserId(Long userId) {
-        String sql = "SELECT * FROM " + FAVORITE_PRODUCT_TABLE_NAME + " WHERE user_id = ?";
-        return jdbcTemplate.query(sql, favoriteProductMapper, userId);
+    public List<FavoriteItemResponse> getAllFavoriteItemsByUserId(Long userId) {
+        String sql = "SELECT favorite_item.favorite_item_id, " +
+                "favorite_item.user_id, " +
+                "favorite_item.item_id, " +
+                "item.item_name, " +
+                "item.item_image, " +
+                "item.price, " +
+                "item.stock " +
+                "FROM favorite_item " +
+                "JOIN item ON favorite_item.item_id = item.item_id " +
+                "WHERE favorite_item.user_id = ?";
+        return jdbcTemplate.query(sql, favoriteItemResponseMapper, userId);
     }
 }

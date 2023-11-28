@@ -1,15 +1,22 @@
 package com.soppingWebsite.service;
 
+import com.soppingWebsite.model.Item;
 import com.soppingWebsite.model.OrderItem;
+import com.soppingWebsite.model.OrderItemRequest;
+import com.soppingWebsite.model.OrderItemResponse;
 
 import java.util.List;
 
-public interface OrderItamService {
-    void createOrderProduct (OrderItem orderItem);
-    void updateOrderProduct (OrderItem orderItem);
-    void deleteOrderProductById (Long orderProductId);
-    void deleteOrderProductByUserId (Long userId);
-    OrderItem getOrderProductById (Long orderProductId);
-    List<OrderItem> getOrderProductsByUserId (Long userId);
-    List<OrderItem> getOrderProductsByOrderId (Long orderId);
+public interface OrderItemService {
+    void createOrderItem(OrderItemRequest orderItemRequest);
+    void updateOrderItemQuantity (Long orderItemId, Integer quantity);
+    void deleteOrderItemById (Long orderProductId);
+    void deleteOrderItemByOrderId (Long orderId);
+    void deleteOrderItemByUserId(Long userId);
+    OrderItem getOrderItemById (Long orderProductId);
+    List<OrderItemResponse> getOrderItemsByOrderId(Long orderId);
+    List<OrderItem> getOrderItemsByUserId(Long userId);
+    List<OrderItemResponse> getOrderItemsByTempOrder(Long userId);
+
+
 }

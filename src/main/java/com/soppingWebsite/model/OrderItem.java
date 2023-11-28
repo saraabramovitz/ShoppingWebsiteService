@@ -1,66 +1,48 @@
 package com.soppingWebsite.model;
 
-public class OrderProduct {
-    private Long orderProductId;
-    private Long userId;
+public class OrderItem {
+    private Long orderItemId;
+    private Long itemId;
     private Long orderId;
-    private Long productId;
-    private Double productPrice;
     private Integer quantity;
 
-    public OrderProduct() {}
+    public OrderItem() {}
 
-    public OrderProduct(Long orderProductId, Long userId, Long orderId, Long productId, Double productPrice, Integer quantity) {
-        this.orderProductId = orderProductId;
-        this.userId = userId;
+    public OrderItem(Long orderItemId, Long itemId, Long orderId, Integer quantity) {
+        this.orderItemId = orderItemId;
+        this.itemId = itemId;
         this.orderId = orderId;
-        this.productId = productId;
-        this.productPrice = productPrice;
         this.quantity = quantity;
     }
 
-    public Long getOrderProductId() {
-        return orderProductId;
+    public Long getOrderItemId() {
+        return orderItemId;
     }
 
-    public Long getUserId() {
-        return userId;
+
+    public Long getItemId() {
+        return itemId;
     }
 
     public Long getOrderId() {
         return orderId;
     }
 
-    public Long getProductId() {
-        return productId;
-    }
-
-    public Double getProductPrice() {
-        return productPrice;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }
 
-    public void setOrderProductId(Long orderProductId) {
-        this.orderProductId = orderProductId;
+    public void setOrderItemId(Long orderItemId) {
+        this.orderItemId = orderItemId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 
     public void setOrderId(Long orderId) {
         this.orderId = orderId;
-    }
-
-    public void setProductId(Long productId) {
-        this.productId = productId;
-    }
-
-    public void setProductPrice(Double productPrice) {
-        this.productPrice = productPrice;
     }
 
     public void setQuantity(Integer quantity) {

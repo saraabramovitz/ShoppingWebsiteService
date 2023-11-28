@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
 public class OrderRepositoryImpl implements OrderRepository{
 
@@ -19,25 +20,33 @@ public class OrderRepositoryImpl implements OrderRepository{
     public static final String ORDER_TABLE_NAME = "user_order";
 
     @Override
-    public void createOrder(Order order) {
-        String sql = "INSERT INTO " + ORDER_TABLE_NAME + " (user_id, shipping_address, total_price) values (?, ?, ?)";
+    public Long createOrder(Long userId, String shippingAddress) {
+        String sql = "INSERT INTO " + ORDER_TABLE_NAME + " (user_id, shipping_address) values (?, ?)";
         jdbcTemplate.update(
             sql,
-            order. getUserId(),
-            order.getShippingAddress(),
-            order.getTotalPrice()
+            userId,
+            shippingAddress
+        );
+        return jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
+    }
+
+    @Override
+    public void updateShippingAddress(Long orderId, String shippingAddress) {
+        String sql = "UPDATE " + ORDER_TABLE_NAME + " SET shipping_address=? WHERE user_order_id=?";
+        jdbcTemplate.update(
+                sql,
+                shippingAddress,
+                orderId
         );
     }
 
     @Override
-    public void updateOrder(Order order) {
-        String sql = "UPDATE " + ORDER_TABLE_NAME + " SET shipping_address=?, total_price=?, status=? WHERE user_order_id=?";
+    public void closeOrder(Long orderId) {
+        String sql = "UPDATE " + ORDER_TABLE_NAME + " SET status=? WHERE user_order_id=?";
         jdbcTemplate.update(
             sql,
-            order.getShippingAddress(),
-            order.getTotalPrice(),
-            order.getOrderStatus(),
-            order.getOrderId()
+            "CLOSE",
+            orderId
         );
     }
 
@@ -65,6 +74,27 @@ public class OrderRepositoryImpl implements OrderRepository{
 
     @Override
     public List<Order> getOrdersByUserId(Long userId) {
-        return null;
+        String sql = "SELECT * FROM " + ORDER_TABLE_NAME + " WHERE user_id=?";
+        return jdbcTemplate.query(sql, orderMapper, userId);
+    }
+
+    @Override
+    public Order getTempOrderByUserId(Long userId) {
+        String sql = "SELECT * FROM " + ORDER_TABLE_NAME + " WHERE status=? and user_id=?";
+        try {
+            return jdbcTemplate.queryForObject(sql, orderMapper, "TEMP", userId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    @Override
+    public Order getTempOrderByOrderId(Long orderId) {
+        String sql = "SELECT * FROM " + ORDER_TABLE_NAME + " WHERE status=? and user_order_id=?";
+        try {
+            return jdbcTemplate.queryForObject(sql, orderMapper, "TEMP", orderId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }

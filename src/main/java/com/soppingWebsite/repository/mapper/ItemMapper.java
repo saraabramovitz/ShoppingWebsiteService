@@ -1,6 +1,6 @@
 package com.soppingWebsite.repository.mapper;
 
-import com.soppingWebsite.model.Product;
+import com.soppingWebsite.model.Item;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -8,18 +8,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Component
-public class ProductMapper implements RowMapper<Product> {
+public class ItemMapper implements RowMapper<Item> {
     @Override
-    public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-        Product product = new Product(
-            rs.getLong("product_id"),
-            rs.getString("product_name"),
-            rs.getString("product_image"),
+        Item item = new Item(
+            rs.getLong("item_id"),
+            rs.getString("item_name"),
+            rs.getString("item_image"),
             rs.getDouble("price"),
             rs.getLong("stock")
         );
 
-        return product;
+        return item;
     }
 }

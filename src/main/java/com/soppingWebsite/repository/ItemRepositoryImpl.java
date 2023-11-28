@@ -10,68 +10,68 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ItamRepositoryImpl implements ItamRepository {
+public class ItemRepositoryImpl implements ItemRepository {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
     @Autowired
-    ItemMapper productMapper;
+    ItemMapper itemMapper;
 
-    public static final String PRODUCT_TABLE_NAME = "product";
+    public static final String ITEM_TABLE_NAME = "item";
 
 
     @Override
-    public void createProduct(Item item) {
-        String sql = "INSERT INTO " + PRODUCT_TABLE_NAME + " (product_name, product_image, price, stock) values (?, ?, ?, ?)";
+    public void createItem(Item item) {
+        String sql = "INSERT INTO " + ITEM_TABLE_NAME + " (item_name, item_image, price, stock) values (?, ?, ?, ?)";
         jdbcTemplate.update(
             sql,
-            item.getProductName(),
-            item.getProductImage(),
+            item.getItemName(),
+            item.getItemImage(),
             item.getPrice(),
             item.getStock()
         );
     }
 
     @Override
-    public void updateProduct(Item item) {
-        String sql = "UPDATE " + PRODUCT_TABLE_NAME + " SET product_name=?, product_image=?, price=?, stock=?, WHERE product_id=?";
+    public void updateItem(Item item) {
+        String sql = "UPDATE " + ITEM_TABLE_NAME + " SET item_name=?, item_image=?, price=?, stock=? WHERE item_id=?";
         jdbcTemplate.update(
                 sql,
-                item.getProductName(),
-                item.getProductImage(),
+                item.getItemName(),
+                item.getItemImage(),
                 item.getPrice(),
                 item.getStock(),
-                item.getProductId()
+                item.getItemId()
         );
     }
 
     @Override
-    public void deleteProductById(Long productId) {
-        String sql = "DELETE FROM " + PRODUCT_TABLE_NAME + " WHERE product_id=?";
-        jdbcTemplate.update(sql, productId);
+    public void deleteItemById(Long itemId) {
+        String sql = "DELETE FROM " + ITEM_TABLE_NAME + " WHERE item_id=?";
+        jdbcTemplate.update(sql, itemId);
 
     }
 
     @Override
-    public Item getProductById(Long productId) {
-        String sql = "SELECT * FROM " + PRODUCT_TABLE_NAME + " WHERE product_id =?";
+    public Item getItemById(Long itemId) {
+        String sql = "SELECT * FROM " + ITEM_TABLE_NAME + " WHERE item_id =?";
         try {
-            return jdbcTemplate.queryForObject(sql, productMapper, productId);
+            return jdbcTemplate.queryForObject(sql, itemMapper, itemId);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
     @Override
-    public List<Item> getAllProducts() {
-        String sql = "SELECT * FROM " + PRODUCT_TABLE_NAME;
-        return jdbcTemplate.query(sql, productMapper);
+    public List<Item> getAllItems() {
+        String sql = "SELECT * FROM " + ITEM_TABLE_NAME;
+        return jdbcTemplate.query(sql, itemMapper);
     }
 
     @Override
-    public List<Item> getProductsContainingSearchText(String searchText) {
-        String sql = "SELECT * FROM " + PRODUCT_TABLE_NAME + " WHERE product_name LIKE ?";
-        return jdbcTemplate.query(sql, productMapper,  "%" + searchText + "%");
+    public List<Item> getItemsContainingSearchText(String searchText) {
+        String sql = "SELECT * FROM " + ITEM_TABLE_NAME + " WHERE item_name LIKE ?";
+        return jdbcTemplate.query(sql, itemMapper,  "%" + searchText + "%");
     }
 
 
