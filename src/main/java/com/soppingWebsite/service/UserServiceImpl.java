@@ -1,6 +1,7 @@
 package com.soppingWebsite.service;
 
 import com.soppingWebsite.model.CustomUser;
+import com.soppingWebsite.model.CustomUserRequest;
 import com.soppingWebsite.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,14 +16,12 @@ public class UserServiceImpl implements UserService{
     OrderService orderService;
 
     @Override
-    public void createUser(CustomUser customUser) {
-        if(customUser.getUserId() != null) {
-            throw new IllegalArgumentException("Invalid id.");
+    public void createUser(CustomUserRequest customUserRequest) throws Exception {
+        CustomUser existingUser = userRepository.findUserByUsername(customUserRequest.getUsername());
+        if(existingUser != null){
+            throw new Exception("Username " + customUserRequest.getUsername() + " is already taken");
         }
-        if(userRepository.getUserByUsername(customUser.getUsername()) != null) {
-            throw new IllegalArgumentException("Username already exist.");
-        }
-        userRepository.createUser(customUser);
+        userRepository.createUser(customUserRequest.toCustomUser());
     }
 
     @Override
@@ -43,7 +42,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public CustomUser getUserByUsername(String username) {
-        return userRepository.getUserByUsername(username);
+    public CustomUser findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
     }
 }

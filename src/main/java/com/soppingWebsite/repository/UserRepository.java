@@ -7,5 +7,6 @@ public interface UserRepository {
     void deleteUserById(Long userId);
     CustomUser getUserById(Long userId);
     CustomUser getUserByEmail(String email);
-    CustomUser getUserByUsername(String username);
+    CustomUser findUserByUsername(String username);
+
 }

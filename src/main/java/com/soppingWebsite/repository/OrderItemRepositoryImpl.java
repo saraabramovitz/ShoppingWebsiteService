@@ -1,9 +1,6 @@
 package com.soppingWebsite.repository;
 
-import com.soppingWebsite.model.Item;
-import com.soppingWebsite.model.OrderItem;
-import com.soppingWebsite.model.OrderItemRequest;
-import com.soppingWebsite.model.OrderItemResponse;
+import com.soppingWebsite.model.*;
 import com.soppingWebsite.repository.mapper.OrderItemMapper;
 import com.soppingWebsite.repository.mapper.OrderItemResponseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +22,23 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
     public static final String ORDER_ITEM_TABLE_NAME = "order_item";
 
     @Override
-    public void createOrderItem(OrderItemRequest orderItemRequest, Long orderId) {
+    public Long createOrderItem(OrderItemRequest orderItemRequest, Long orderId) {
         String sql = "INSERT INTO " + ORDER_ITEM_TABLE_NAME + " (user_order_id, item_id) values (?, ?);";
         jdbcTemplate.update(
             sql,
             orderId,
             orderItemRequest.getItemId()
         );
+        return jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
     }
 
     @Override
-    public void updateOrderItemQuantity (Long orderItemId, Integer quantity) {
+    public void updateOrderItemQuantity (OrderItemQuantity orderItemQuantity) {
         String sql = "UPDATE " + ORDER_ITEM_TABLE_NAME + " SET quantity=? WHERE order_item_id=?;";
         jdbcTemplate.update(
             sql,
-            quantity,
-            orderItemId
+            orderItemQuantity.getQuantity(),
+            orderItemQuantity.getOrderItemId()
         );
     }
 
@@ -81,7 +79,11 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
                 "order_item.user_order_id, " +
                 "item.item_name, " +
                 "item.item_image, " +
+                "item.item_overview, " +
+                "item.item_details, " +
+                "item.item_measurements, " +
                 "item.price, " +
+                "item.stock, " +
                 "order_item.quantity " +
                 "FROM " + ORDER_ITEM_TABLE_NAME + " " +
                 "JOIN item ON order_item.item_id = item.item_id " +
@@ -122,6 +124,11 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
             "order_item.user_order_id, " +
             "item.item_name, " +
             "item.item_image, " +
+            "item.item_overview, " +
+            "item.item_details, " +
+            "item.item_measurements, " +
+            "item.price, " +
+            "item.stock, "+
             "item.price, " +
             "order_item.quantity " +
             "FROM  " + ORDER_ITEM_TABLE_NAME + " " +

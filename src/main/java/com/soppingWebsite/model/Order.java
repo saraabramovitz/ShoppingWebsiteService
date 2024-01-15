@@ -7,13 +7,13 @@ import java.time.LocalDate;
 public class Order {
     private Long orderId;
     private Long userId;
-    private String shippingAddress;
+    private Address shippingAddress;
     private LocalDate orderDate;
     private OrderStatus orderStatus;
 
     public Order() {}
 
-    public Order(Long orderId, Long userId, String shippingAddress, LocalDate orderDate, OrderStatus orderStatus) {
+    public Order(Long orderId, Long userId, Address shippingAddress, LocalDate orderDate, OrderStatus orderStatus) {
         this.orderId = orderId;
         this.userId = userId;
         this.shippingAddress = shippingAddress;
@@ -29,7 +29,7 @@ public class Order {
         return userId;
     }
 
-    public String getShippingAddress() {
+    public Address getShippingAddress() {
         return shippingAddress;
     }
 
@@ -49,7 +49,7 @@ public class Order {
         this.userId = userId;
     }
 
-    public void setShippingAddress(String shippingAddress) {
+    public void setShippingAddress(Address shippingAddress) {
         this.shippingAddress = shippingAddress;
     }
 

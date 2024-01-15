@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @Configuration
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -34,6 +34,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().disable()
                 .authorizeRequests().antMatchers("/user/authenticate").permitAll()
                 .antMatchers("/user/create").permitAll()
+                .antMatchers("/user/getByUsername/**").permitAll()
+                .antMatchers("/item/create").permitAll()
+                .antMatchers("/item/all").permitAll()
+                .antMatchers("/item/containingSearchText/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -48,5 +52,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 }
-
 

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/item")
+@CrossOrigin
 public class ItemController {
 
     @Autowired
@@ -64,13 +65,15 @@ public class ItemController {
     }
 
     @GetMapping("/containingSearchText/{searchText}")
-    public ResponseEntity<?> getItemsContainingSearchText(String searchText){
+    @CrossOrigin
+    public ResponseEntity<?> getItemsContainingSearchText(@PathVariable String searchText){
         try {
             return ResponseEntity.ok(itemService.getItemsContainingSearchText(searchText));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
+
 
 
 }

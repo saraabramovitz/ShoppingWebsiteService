@@ -17,21 +17,19 @@ public class UserRepositoryImpl implements UserRepository{
     UserMapper userMapper;
 
     public static final String USER_TABLE_NAME = "user";
-
     @Override
     public void createUser(CustomUser customUser) {
-        String sql = "INSERT INTO " + USER_TABLE_NAME + " (first_name, last_name, email, phone, address, username, password) values (?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(
-            sql,
-            customUser.getFirstName(),
-            customUser.getLastName(),
-            customUser.getEmail(),
-            customUser.getPhone(),
-            customUser.getAddress(),
-            customUser.getUsername(),
-            customUser.getPassword()
-        );
+        String sql = "INSERT INTO " + USER_TABLE_NAME + " (first_name, last_name, email, phone, city, street, buildingNumber," +
+                " apartment, username,  password, roles, permissions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,
+            customUser.getFirstName(), customUser.getLastName(), customUser.getEmail(),
+            customUser.getPhone(), customUser.getAddress().getCity(),
+            customUser.getAddress().getStreet(), customUser.getAddress().getBuildingNumber(),
+            customUser.getAddress().getApartment(),
+            customUser.getUsername(), customUser.getPassword(),
+            customUser.getRoles(), customUser.getPermissions());
     }
+
 
     @Override
     public void deleteUserById(Long userId) {
@@ -60,11 +58,11 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
-    public CustomUser getUserByUsername(String username) {
-        String sql = "SELECT * FROM " + USER_TABLE_NAME + " WHERE username =?";
+    public CustomUser findUserByUsername(String username) {
+        String sql = "SELECT * FROM " + USER_TABLE_NAME + " WHERE username=?";
         try {
-            return jdbcTemplate.queryForObject(sql, userMapper, username);
-        } catch (EmptyResultDataAccessException e) {
+            return jdbcTemplate.queryForObject(sql, new UserMapper(), username);
+        } catch (EmptyResultDataAccessException error) {
             return null;
         }
     }

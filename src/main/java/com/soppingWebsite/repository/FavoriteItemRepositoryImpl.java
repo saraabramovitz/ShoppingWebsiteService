@@ -22,17 +22,18 @@ public class FavoriteItemRepositoryImpl implements FavoriteItemRepository {
 
 
     @Override
-    public void createFavoriteItem(FavoriteItem favoriteItem) {
+    public Long createFavoriteItem(FavoriteItem favoriteItem) {
         String sql = "INSERT INTO " + FAVORITE_ITEM_TABLE_NAME + " (user_id, item_id) values (?, ?)";
         jdbcTemplate.update(
             sql,
             favoriteItem.getUserId(),
             favoriteItem.getItemId()
         );
+        return jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Long.class);
     }
 
     @Override
-    public void deleteFavoriteItemById(Long favoriteItemId) {
+    public void deleteFavoriteItem(Long favoriteItemId) {
         String sql = "DELETE FROM " + FAVORITE_ITEM_TABLE_NAME + " WHERE favorite_item_id=?";
         jdbcTemplate.update(sql, favoriteItemId);
     }
@@ -50,11 +51,15 @@ public class FavoriteItemRepositoryImpl implements FavoriteItemRepository {
                 "favorite_item.item_id, " +
                 "item.item_name, " +
                 "item.item_image, " +
+                "item.item_overview, " +
+                "item.item_details, " +
+                "item.item_measurements, " +
                 "item.price, " +
                 "item.stock " +
-                "FROM favorite_item " +
+                "FROM " + FAVORITE_ITEM_TABLE_NAME +
                 "JOIN item ON favorite_item.item_id = item.item_id " +
-                "WHERE favorite_item.favorite_item_id = ?";        try {
+                "WHERE favorite_item.favorite_item_id = ?";
+        try {
             return jdbcTemplate.queryForObject(sql, favoriteItemResponseMapper, favoriteItemId);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -68,6 +73,9 @@ public class FavoriteItemRepositoryImpl implements FavoriteItemRepository {
                 "favorite_item.item_id, " +
                 "item.item_name, " +
                 "item.item_image, " +
+                "item.item_overview, " +
+                "item.item_details, " +
+                "item.item_measurements, " +
                 "item.price, " +
                 "item.stock " +
                 "FROM favorite_item " +

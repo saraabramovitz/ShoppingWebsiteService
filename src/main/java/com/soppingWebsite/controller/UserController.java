@@ -3,6 +3,7 @@ package com.soppingWebsite.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.soppingWebsite.model.CustomUser;
+import com.soppingWebsite.model.CustomUserRequest;
 import com.soppingWebsite.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,17 +12,18 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(@RequestBody CustomUser customUser) throws JsonProcessingException {
-        try {
-            userService.createUser(customUser);
-            return ResponseEntity.ok("CustomUser created successfully");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+    public ResponseEntity<?> createUser(@RequestBody CustomUserRequest customUserRequest){
+        try{
+            userService.createUser(customUserRequest);
+            return null;
+        } catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -43,6 +45,16 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
+
+    @GetMapping("/getByUsername/{username}")
+    public ResponseEntity<?> getUserByUsername(@PathVariable String username){
+        try {
+            return ResponseEntity.ok(userService.findUserByUsername(username));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
+    }
+
 
 
 

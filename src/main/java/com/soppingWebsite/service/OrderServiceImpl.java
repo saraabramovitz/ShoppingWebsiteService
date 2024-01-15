@@ -1,7 +1,6 @@
 package com.soppingWebsite.service;
 
-import com.soppingWebsite.model.Order;
-import com.soppingWebsite.model.OrderItem;
+import com.soppingWebsite.model.*;
 import com.soppingWebsite.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,9 +17,12 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     OrderItemService orderItemService;
 
+    @Autowired
+    ItemService itemService;
+
 
     @Override
-    public Long createOrder(Long userId, String shippingAddress) {
+    public Long createOrder(Long userId, Address shippingAddress) {
         if(userService.getUserById(userId) == null){
             throw new IllegalArgumentException("CustomUser does not exist.");
         }
@@ -28,20 +30,30 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public void updateShippingAddress(Long orderId, String shippingAddress) {
-        if(orderRepository.getOrderById(orderId) == null) {
+    public void updateShippingAddress(ShippingAddress shippingAddress) {
+        if(orderRepository.getOrderById(shippingAddress.getOrderId()) == null) {
             throw new IllegalArgumentException("Order does not exist.");
         }
-        orderRepository.updateShippingAddress(orderId, shippingAddress);
+        orderRepository.updateShippingAddress(shippingAddress);
     }
 
     @Override
     public void closeOrder(Long orderId) {
+        List<OrderItemResponse> orderItemList = orderItemService.getOrderItemsByOrderId(orderId);
         if(orderRepository.getOrderById(orderId) == null) {
             throw new IllegalArgumentException("Order does not exist.");
         }
         if(orderRepository.getTempOrderByOrderId(orderId) == null){
             throw new IllegalArgumentException("The order is not a temp order.");
+        }
+        for (OrderItemResponse orderItem : orderItemList) {
+            if (orderItem.getQuantity() > itemService.getItemById(orderItem.getItemId()).getStock()) {
+                throw new IllegalArgumentException("Order item with id " + orderItem.getOrderItemId() + " is out of stock.");
+            } else {
+                Item item = itemService.getItemById(orderItem.getItemId());
+                Long updateStock = item.getStock() - orderItem.getQuantity();
+                itemService.updateStock(item.getItemId(), updateStock);
+            }
         }
         orderRepository.closeOrder(orderId);
     }
@@ -65,7 +77,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public Order getOrderById(Long orderId) {
+    public OrderResponse getOrderById(Long orderId) {
         if(orderRepository.getOrderById(orderId) == null){
             throw new IllegalArgumentException("Order does not exist.");
         }
@@ -73,15 +85,15 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<Order> getOrdersByUserId(Long userId) {
-        if(userService.getUserById(userId) == null){
+    public List<OrderResponse> getOrdersByUserId(Long userId) {
+        if (userService.getUserById(userId) == null) {
             throw new IllegalArgumentException("CustomUser does not exist.");
         }
         return orderRepository.getOrdersByUserId(userId);
     }
 
     @Override
-    public Order getTempOrderByUserId(Long userId) {
+    public OrderResponse getTempOrderByUserId(Long userId) {
         if(userService.getUserById(userId) == null){
             throw new IllegalArgumentException("CustomUser does not exist.");
         }

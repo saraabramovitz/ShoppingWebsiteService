@@ -1,10 +1,12 @@
 package com.soppingWebsite.service;
 
 import com.soppingWebsite.model.CustomUser;
+import com.soppingWebsite.model.CustomUserRequest;
 
 public interface UserService {
-    void createUser(CustomUser customUser);
+
+    void createUser(CustomUserRequest customUserRequest) throws Exception;
     void deleteUserById(Long userId);
     CustomUser getUserById(Long userId);
-    CustomUser getUserByUsername(String username);
+    CustomUser findUserByUsername(String username);
 }

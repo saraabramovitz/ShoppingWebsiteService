@@ -30,6 +30,11 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public void updateStock(Long itemId, Long stock) {
+        itemRepository.updateStock(itemId, stock);
+    }
+
+    @Override
     public void deleteItemById(Long itemId) {
         if(itemRepository.getItemById(itemId) == null) {
             throw new IllegalArgumentException("Item does not exist.");

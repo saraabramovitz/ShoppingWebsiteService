@@ -36,13 +36,18 @@ public class ItemRepositoryImpl implements ItemRepository {
     public void updateItem(Item item) {
         String sql = "UPDATE " + ITEM_TABLE_NAME + " SET item_name=?, item_image=?, price=?, stock=? WHERE item_id=?";
         jdbcTemplate.update(
-                sql,
-                item.getItemName(),
-                item.getItemImage(),
-                item.getPrice(),
-                item.getStock(),
-                item.getItemId()
+            sql,
+            item.getItemName(),
+            item.getItemImage(),
+            item.getPrice(),
+            item.getStock(),
+            item.getItemId()
         );
+    }
+
+    public void updateStock(Long itemId, Long stock) {
+        String sql = "UPDATE " + ITEM_TABLE_NAME + " SET stock=? WHERE item_id=?";
+        jdbcTemplate.update(sql, stock, itemId);
     }
 
     @Override
@@ -70,9 +75,20 @@ public class ItemRepositoryImpl implements ItemRepository {
 
     @Override
     public List<Item> getItemsContainingSearchText(String searchText) {
-        String sql = "SELECT * FROM " + ITEM_TABLE_NAME + " WHERE item_name LIKE ?";
-        return jdbcTemplate.query(sql, itemMapper,  "%" + searchText + "%");
+        String sql = "SELECT * FROM " + ITEM_TABLE_NAME + " WHERE LOWER(item_name) LIKE LOWER(?)";
+        String lowerSearchText = "%" + searchText.toLowerCase() + "%";
+        System.out.println("Search Text: " + lowerSearchText);
+
+        List<Item> items = jdbcTemplate.query(sql, itemMapper, lowerSearchText);
+
+        for (Item item : items) {
+            System.out.println("Item Name: " + item.getItemName());
+        }
+
+        return items;
     }
+
+
 
 
 }

@@ -22,7 +22,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     OrderItemService orderItemService;
 
     @Override
-    public void createOrderItem(OrderItemRequest orderItemRequest) {
+    public OrderItem createOrderItem(OrderItemRequest orderItemRequest) {
         CustomUser customUser = userService.getUserById(orderItemRequest.getUserId());
         Item item = itemService.getItemById(orderItemRequest.getItemId());
 
@@ -38,33 +38,38 @@ public class OrderItemServiceImpl implements OrderItemService {
 
         if(orderService.getOrdersByUserId(customUser.getUserId()) == null) {
             Long lastCreatedOrderId = orderService.createOrder(customUser.getUserId(), customUser.getAddress());
-            orderItemRepository.createOrderItem(orderItemRequest, lastCreatedOrderId);
+            Long orderItemId =  orderItemRepository.createOrderItem(orderItemRequest, lastCreatedOrderId);
+            return orderItemRepository.getOrderItemById(orderItemId);
         } else if(orderService.getTempOrderByUserId(customUser.getUserId()) == null) {
             Long lastCreatedOrderId = orderService.createOrder(customUser.getUserId(), customUser.getAddress());
-            orderItemRepository.createOrderItem(orderItemRequest, lastCreatedOrderId);
+            Long orderItemId =  orderItemRepository.createOrderItem(orderItemRequest, lastCreatedOrderId);
+            return orderItemRepository.getOrderItemById(orderItemId);
+
         } else {
             Long orderId = orderService.getTempOrderByUserId(customUser.getUserId()).getOrderId();
             if(orderItemRepository.getOrderItemByOrderIdAndItemId(orderId, item.getItemId()) == null){
-                orderItemRepository.createOrderItem(orderItemRequest, orderId);
+                Long orderItemId =  orderItemRepository.createOrderItem(orderItemRequest, orderId);
+                return orderItemRepository.getOrderItemById(orderItemId);
             } else {
                 throw new IllegalArgumentException("Order item already exist in the order.");
             }
         }
+
     }
 
 
 
     @Override
-    public void updateOrderItemQuantity (Long orderItemId, Integer quantity) {
-        if(getOrderItemById(orderItemId) == null){
+    public void updateOrderItemQuantity (OrderItemQuantity orderItemQuantity) {
+        if(getOrderItemById(orderItemQuantity.getOrderItemId()) == null){
             throw new IllegalArgumentException("Order item does not exist.");
         }
-        Long ItemId = orderItemRepository.getOrderItemById(orderItemId).getItemId();
+        Long ItemId = orderItemRepository.getOrderItemById(orderItemQuantity.getOrderItemId()).getItemId();
         Long itemStock = itemService.getItemById(ItemId).getStock();
-        if(itemStock < quantity){
+        if(itemStock < orderItemQuantity.getQuantity()){
             throw new IllegalArgumentException("Item quantity amount is not available in stock.");
         }
-        orderItemRepository.updateOrderItemQuantity (orderItemId, quantity);
+        orderItemRepository.updateOrderItemQuantity (orderItemQuantity);
 
     }
 

@@ -20,7 +20,7 @@ public class FavoriteItemServiceImpl implements FavoriteItemService {
     UserService userService;
 
     @Override
-    public void createFavoriteItem(FavoriteItem favoriteItem) {
+    public Long createFavoriteItem(FavoriteItem favoriteItem) {
         if(favoriteItem.getFavoriteItemId() != null){
             throw new IllegalArgumentException("Invalid id.");
         }
@@ -31,17 +31,12 @@ public class FavoriteItemServiceImpl implements FavoriteItemService {
         if(itemService.getItemById(favoriteItem.getItemId()) == null){
             throw new IllegalArgumentException("Item does not exist.");
         }
-        favoriteItemRepository.createFavoriteItem(favoriteItem);
+        return favoriteItemRepository.createFavoriteItem(favoriteItem);
     }
 
     @Override
-    public void deleteFavoriteItemById(Long favoriteItemId) {
-        System.out.println(favoriteItemId);
-        if(favoriteItemRepository.getFavoriteItemById(favoriteItemId) == null){
-            throw new IllegalArgumentException("Favorite item does not exist.");
-        }
-
-        favoriteItemRepository.deleteFavoriteItemById(favoriteItemId);
+    public void deleteFavoriteItem(Long favoriteItemId) {
+        favoriteItemRepository.deleteFavoriteItem(favoriteItemId);
     }
 
     @Override

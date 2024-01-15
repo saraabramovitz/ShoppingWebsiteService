@@ -1,8 +1,6 @@
 package com.soppingWebsite.model;
 
-public class CustomUser {
-
-    private Long userId;
+public class CustomUserRequest {
     private String firstName;
     private String lastName;
     private String email;
@@ -10,14 +8,8 @@ public class CustomUser {
     private Address address;
     private String username;
     private String password;
-    private String roles = "";
-    private String permissions = "";
 
-
-    public CustomUser() {}
-
-    public CustomUser(Long userId, String firstName, String lastName, String email, String phone, Address address, String username, String password, String roles, String permissions) {
-        this.userId = userId;
+    public CustomUserRequest(String firstName, String lastName, String email, String phone, Address address, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -25,12 +17,6 @@ public class CustomUser {
         this.address = address;
         this.username = username;
         this.password = password;
-        this.roles = roles;
-        this.permissions = permissions;
-    }
-
-    public Long getUserId() {
-        return userId;
     }
 
     public String getFirstName() {
@@ -61,18 +47,6 @@ public class CustomUser {
         return password;
     }
 
-    public String getRoles() {
-        return roles;
-    }
-
-    public String getPermissions() {
-        return permissions;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -101,11 +75,18 @@ public class CustomUser {
         this.password = password;
     }
 
-    public void setRoles(String roles) {
-        this.roles = roles;
-    }
-
-    public void setPermissions(String permissions) {
-        this.permissions = permissions;
+    public CustomUser toCustomUser(){
+        return new CustomUser(
+                null,
+                this.firstName,
+                this.lastName,
+                this.email,
+                this.phone,
+                this.address,
+                this.username,
+                this.password,
+                "",
+                ""
+        );
     }
 }

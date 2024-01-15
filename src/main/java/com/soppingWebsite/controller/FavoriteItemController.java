@@ -12,24 +12,26 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/favoriteItem")
+@CrossOrigin
 public class FavoriteItemController {
     @Autowired
     private FavoriteItemService favoriteItemService;
 
     @PostMapping("/create")
+    @CrossOrigin
     public ResponseEntity<?> createFavoriteItem(@RequestBody FavoriteItem favoriteItem) throws JsonProcessingException {
         try {
-            favoriteItemService.createFavoriteItem(favoriteItem);
-            return ResponseEntity.ok("Favorite item created successfully");
+            return ResponseEntity.ok(favoriteItemService.createFavoriteItem(favoriteItem));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
 
     @DeleteMapping("/delete/{favoriteItemId}")
-    public ResponseEntity<?> deleteFavoriteItemById(@PathVariable Long favoriteItemId){
+    @CrossOrigin
+    public ResponseEntity<?> deleteFavoriteItem(@PathVariable Long favoriteItemId){
         try {
-            favoriteItemService.deleteFavoriteItemById(favoriteItemId);
+            favoriteItemService.deleteFavoriteItem(favoriteItemId);
             return ResponseEntity.ok("Favorite item deleted successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());

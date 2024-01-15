@@ -2,10 +2,8 @@ package com.soppingWebsite.security.model;
 
 import java.io.Serializable;
 
-public class AuthenticationRequest implements Serializable {
 
-    private String username;
-    private String password;
+public class AuthenticationRequest implements Serializable {
 
     public AuthenticationRequest() {}
 
@@ -13,6 +11,8 @@ public class AuthenticationRequest implements Serializable {
         this.setUsername(username);
         this.setPassword(password);
     }
+    private String username;
+    private String password;
 
     public String getUsername() {
         return username;

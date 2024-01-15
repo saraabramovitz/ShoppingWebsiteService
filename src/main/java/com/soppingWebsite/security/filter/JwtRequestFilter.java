@@ -1,5 +1,6 @@
 package com.soppingWebsite.security.filter;
 
+
 import com.soppingWebsite.security.service.CustomUserDetailsService;
 import com.soppingWebsite.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 }
-
-
-
 

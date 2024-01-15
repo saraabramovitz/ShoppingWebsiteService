@@ -1,6 +1,5 @@
 package com.soppingWebsite.security.service;
 
-import com.soppingWebsite.security.service.CustomUserDetailsService;
 import com.soppingWebsite.security.model.AuthenticationRequest;
 import com.soppingWebsite.security.model.AuthenticationResponse;
 import com.soppingWebsite.utils.JwtUtil;
@@ -32,9 +31,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         UserDetails userDetails = myUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-        return new AuthenticationResponse( jwtUtil.generateToken(userDetails));
+        return new AuthenticationResponse(jwtUtil.generateToken(userDetails));
     }
 }
-
 
 

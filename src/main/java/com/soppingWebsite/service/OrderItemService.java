@@ -1,15 +1,12 @@
 package com.soppingWebsite.service;
 
-import com.soppingWebsite.model.Item;
-import com.soppingWebsite.model.OrderItem;
-import com.soppingWebsite.model.OrderItemRequest;
-import com.soppingWebsite.model.OrderItemResponse;
+import com.soppingWebsite.model.*;
 
 import java.util.List;
 
 public interface OrderItemService {
-    void createOrderItem(OrderItemRequest orderItemRequest);
-    void updateOrderItemQuantity (Long orderItemId, Integer quantity);
+    OrderItem createOrderItem(OrderItemRequest orderItemRequest);
+    void updateOrderItemQuantity (OrderItemQuantity orderItemQuantity);
     void deleteOrderItemById (Long orderProductId);
     void deleteOrderItemByOrderId (Long orderId);
     void deleteOrderItemByUserId(Long userId);

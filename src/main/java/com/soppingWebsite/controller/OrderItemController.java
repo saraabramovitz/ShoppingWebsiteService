@@ -1,6 +1,7 @@
 package com.soppingWebsite.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.soppingWebsite.model.OrderItemQuantity;
 import com.soppingWebsite.model.OrderItemRequest;
 import com.soppingWebsite.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/orderItem")
+@CrossOrigin
 public class OrderItemController {
 
     @Autowired
@@ -18,17 +20,16 @@ public class OrderItemController {
     @PostMapping("/create")
     public ResponseEntity<?> createOrderItem(@RequestBody OrderItemRequest orderItemRequest) throws JsonProcessingException {
         try {
-            orderItemService.createOrderItem(orderItemRequest);
-            return ResponseEntity.ok("Order item created successfully");
+            return ResponseEntity.ok(orderItemService.createOrderItem(orderItemRequest));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
 
     @PutMapping("/updateQuantity")
-    public ResponseEntity<?> updateOrderItemQuantity(@RequestParam Long orderItemId, Integer quantity) {
+    public ResponseEntity<?> updateOrderItemQuantity(@RequestBody OrderItemQuantity orderItemQuantity ) {
         try {
-            orderItemService.updateOrderItemQuantity (orderItemId, quantity);
+            orderItemService.updateOrderItemQuantity (orderItemQuantity);
             return ResponseEntity.ok("Order item updated successfully");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
