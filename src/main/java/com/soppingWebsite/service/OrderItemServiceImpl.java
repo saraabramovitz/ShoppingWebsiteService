@@ -27,47 +27,42 @@ public class OrderItemServiceImpl implements OrderItemService {
         Item item = itemService.getItemById(orderItemRequest.getItemId());
 
         if(customUser == null){
-            throw new IllegalArgumentException("CustomUser does not exist.");
+            throw new IllegalArgumentException("User does not exist");
         }
         if(item == null){
-            throw new IllegalArgumentException("Item does not exist.");
+            throw new IllegalArgumentException("Item does not exist");
         }
         if(item.getStock() == 0){
-            throw new IllegalArgumentException("Item is not available in stock.");
+            throw new IllegalArgumentException("Item is not available in stock");
         }
 
-        if(orderService.getOrdersByUserId(customUser.getUserId()) == null) {
+        if(orderService.getTempOrderByUserId(customUser.getUserId()).getOrder() == null) {
             Long lastCreatedOrderId = orderService.createOrder(customUser.getUserId(), customUser.getAddress());
-            Long orderItemId =  orderItemRepository.createOrderItem(orderItemRequest, lastCreatedOrderId);
+            Long orderItemId = orderItemRepository.createOrderItem(orderItemRequest, lastCreatedOrderId);
             return orderItemRepository.getOrderItemById(orderItemId);
-        } else if(orderService.getTempOrderByUserId(customUser.getUserId()) == null) {
-            Long lastCreatedOrderId = orderService.createOrder(customUser.getUserId(), customUser.getAddress());
-            Long orderItemId =  orderItemRepository.createOrderItem(orderItemRequest, lastCreatedOrderId);
-            return orderItemRepository.getOrderItemById(orderItemId);
-
-        } else {
-            Long orderId = orderService.getTempOrderByUserId(customUser.getUserId()).getOrderId();
-            if(orderItemRepository.getOrderItemByOrderIdAndItemId(orderId, item.getItemId()) == null){
-                Long orderItemId =  orderItemRepository.createOrderItem(orderItemRequest, orderId);
+        }
+        else {
+            Long orderId = orderService.getTempOrderByUserId(customUser.getUserId()).getOrder().getOrderId();
+            if(orderItemRepository.getOrderItemByOrderIdAndItemId(orderId, orderItemRequest.getItemId()) == null){
+                Long orderItemId = orderItemRepository.createOrderItem(orderItemRequest, orderId);
                 return orderItemRepository.getOrderItemById(orderItemId);
             } else {
-                throw new IllegalArgumentException("Order item already exist in the order.");
+                throw new IllegalArgumentException("Item already exist in order");
             }
         }
 
     }
 
 
-
     @Override
     public void updateOrderItemQuantity (OrderItemQuantity orderItemQuantity) {
         if(getOrderItemById(orderItemQuantity.getOrderItemId()) == null){
-            throw new IllegalArgumentException("Order item does not exist.");
+            throw new IllegalArgumentException("Order item does not exist");
         }
         Long ItemId = orderItemRepository.getOrderItemById(orderItemQuantity.getOrderItemId()).getItemId();
         Long itemStock = itemService.getItemById(ItemId).getStock();
         if(itemStock < orderItemQuantity.getQuantity()){
-            throw new IllegalArgumentException("Item quantity amount is not available in stock.");
+            throw new IllegalArgumentException("Item quantity amount is not available in stock");
         }
         orderItemRepository.updateOrderItemQuantity (orderItemQuantity);
 
@@ -76,7 +71,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public void deleteOrderItemById(Long orderItemId) {
         if(orderItemRepository.getOrderItemById(orderItemId) == null){
-            throw new IllegalArgumentException("Order item does not exist.");
+            throw new IllegalArgumentException("Order item does not exist");
         }
         Long orderId = orderItemRepository.getOrderItemById(orderItemId).getOrderId();
         orderItemRepository.deleteOrderItemById(orderItemId);
@@ -97,7 +92,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public void deleteOrderItemByUserId(Long userId) {
         if(userService.getUserById(userId) == null){
-            throw new IllegalArgumentException("CustomUser does not exist.");
+            throw new IllegalArgumentException("User does not exist.");
         }
         orderItemRepository.deleteOrderItemByUserId(userId);
     }

@@ -47,18 +47,18 @@ public class FavoriteItemRepositoryImpl implements FavoriteItemRepository {
     @Override
     public FavoriteItemResponse getFavoriteItemById(Long favoriteItemId) {
         String sql = "SELECT favorite_item.favorite_item_id, " +
-                "favorite_item.user_id, " +
-                "favorite_item.item_id, " +
-                "item.item_name, " +
-                "item.item_image, " +
-                "item.item_overview, " +
-                "item.item_details, " +
-                "item.item_measurements, " +
-                "item.price, " +
-                "item.stock " +
-                "FROM " + FAVORITE_ITEM_TABLE_NAME +
-                "JOIN item ON favorite_item.item_id = item.item_id " +
-                "WHERE favorite_item.favorite_item_id = ?";
+            "favorite_item.user_id, " +
+            "favorite_item.item_id, " +
+            "item.item_name, " +
+            "item.item_image, " +
+            "item.item_overview, " +
+            "item.item_details, " +
+            "item.item_measurements, " +
+            "item.price, " +
+            "item.stock " +
+            "FROM " + FAVORITE_ITEM_TABLE_NAME +
+            "JOIN item ON favorite_item.item_id = item.item_id " +
+            "WHERE favorite_item.favorite_item_id = ?";
         try {
             return jdbcTemplate.queryForObject(sql, favoriteItemResponseMapper, favoriteItemId);
         } catch (EmptyResultDataAccessException e) {
@@ -69,18 +69,18 @@ public class FavoriteItemRepositoryImpl implements FavoriteItemRepository {
     @Override
     public List<FavoriteItemResponse> getAllFavoriteItemsByUserId(Long userId) {
         String sql = "SELECT favorite_item.favorite_item_id, " +
-                "favorite_item.user_id, " +
-                "favorite_item.item_id, " +
-                "item.item_name, " +
-                "item.item_image, " +
-                "item.item_overview, " +
-                "item.item_details, " +
-                "item.item_measurements, " +
-                "item.price, " +
-                "item.stock " +
-                "FROM favorite_item " +
-                "JOIN item ON favorite_item.item_id = item.item_id " +
-                "WHERE favorite_item.user_id = ?";
+            "favorite_item.user_id, " +
+            "favorite_item.item_id, " +
+            "item.item_name, " +
+            "item.item_image, " +
+            "item.item_overview, " +
+            "item.item_details, " +
+            "item.item_measurements, " +
+            "item.price, " +
+            "item.stock " +
+            "FROM favorite_item " +
+            "JOIN item ON favorite_item.item_id = item.item_id " +
+            "WHERE favorite_item.user_id = ?";
         return jdbcTemplate.query(sql, favoriteItemResponseMapper, userId);
     }
 }

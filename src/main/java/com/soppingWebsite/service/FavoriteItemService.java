@@ -6,7 +6,7 @@ import com.soppingWebsite.model.FavoriteItemResponse;
 import java.util.List;
 
 public interface FavoriteItemService {
-    Long createFavoriteItem(FavoriteItem favoriteItem);
+    Long createFavoriteItem(FavoriteItem favoriteItem) throws Exception;
     void deleteFavoriteItem(Long favoriteItemId);
     void deleteFavoriteItemByUserId(Long userId);
     FavoriteItemResponse getFavoriteItemById(Long favoriteItemId);

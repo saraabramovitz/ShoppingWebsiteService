@@ -18,10 +18,10 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(@RequestBody CustomUserRequest customUserRequest){
+    public ResponseEntity<?> createUser(@RequestBody CustomUserRequest customUserRequest) throws Exception{
         try{
             userService.createUser(customUserRequest);
-            return null;
+            return ResponseEntity.ok("CustomUser has created successfully");
         } catch (Exception exception){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
@@ -31,9 +31,9 @@ public class UserController {
     public ResponseEntity<?> deleteUserById(@PathVariable Long userId){
         try {
             userService.deleteUserById(userId);
-            return ResponseEntity.ok("CustomUser deleted successfully");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+            return ResponseEntity.ok("User deleted successfully");
+        } catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -41,8 +41,8 @@ public class UserController {
     public ResponseEntity<?> getUserById(@PathVariable Long userId){
         try {
             return ResponseEntity.ok(userService.getUserById(userId));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -50,8 +50,8 @@ public class UserController {
     public ResponseEntity<?> getUserByUsername(@PathVariable String username){
         try {
             return ResponseEntity.ok(userService.findUserByUsername(username));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 

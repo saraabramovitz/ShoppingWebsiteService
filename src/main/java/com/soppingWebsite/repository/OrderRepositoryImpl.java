@@ -40,12 +40,12 @@ public class OrderRepositoryImpl implements OrderRepository{
     public void updateShippingAddress(ShippingAddress shippingAddress) {
         String sql = "UPDATE " + ORDER_TABLE_NAME + " SET city=?, street=?, buildingNumber=?, apartment=? WHERE user_order_id=?";
         jdbcTemplate.update(
-                sql,
-                shippingAddress.getAddress().getCity(),
-                shippingAddress.getAddress().getStreet(),
-                shippingAddress.getAddress().getBuildingNumber(),
-                shippingAddress.getAddress().getApartment(),
-                shippingAddress.getOrderId()
+            sql,
+            shippingAddress.getAddress().getCity(),
+            shippingAddress.getAddress().getStreet(),
+            shippingAddress.getAddress().getBuildingNumber(),
+            shippingAddress.getAddress().getApartment(),
+            shippingAddress.getOrderId()
         );
     }
 

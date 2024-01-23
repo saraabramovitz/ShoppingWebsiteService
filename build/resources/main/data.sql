@@ -74,7 +74,7 @@ INSERT INTO item (item_name, item_image,item_overview, item_details, item_measur
         'This comfortable sofa has pocket spring seat cushions with high resilience foam and a top layer of wadding. It provides a nice comfort and support for your body while maintaining the shape of the seat cushions. The contact surfaces are covered with grann - a soft, smooth and strong grain leather with natural variations. Other surfaces have bomstand, a coated fabric that has a similar look and feel to leather. The sofas sections can be combined in different ways to get a size and shape that suits you. If you need a larger sofa, you can add a section or two.',
         'width: 110 1/4 " Height: 32 5/8 " Min. depth: 37 3/8 " Max. depth: 64 1/8 " Min. seat depth: 23 5/8 " Max. seat depth: 48 7/8 " Seat height: 17 3/4 "',
         1985,
-        150),
+        2),
 
         ('Sofa with chaise, Kilanda dark blue',
         'https://www.ikea.com/us/en/images/products/uppland-sofa-with-chaise-kilanda-dark-blue__1194860_pe902110_s5.jpg?f=xxs',
@@ -82,7 +82,7 @@ INSERT INTO item (item_name, item_image,item_overview, item_details, item_measur
         'Enjoy the super comfy Appland sofa with embracing feel and deep seat cushions made of pocket springs, high resilience foam and polyester fibers, adding both firm support and relaxing softness. Reversible back cushions provide soft support for your back and two different sides to wear. Thanks to the combination of polyester fibers and cut foam the cushions will retain their shape and comfort year after year. The cover is easy to keep clean since it is removable and can be machine washed. A range of coordinated covers makes it easy for you to give your furniture a new look.',
         'Width: 101 5/8 " Seat width, chaise lounge: 26 3/4 " Depth: 64 5/8 " Height: 36 1/4 " Seat depth, chaise lounge: 51 1/8 " Height under furniture: 6 3/4 " Armrest height: 26 3/4 " Seat width: 79 7/8 " Seat depth: 22 7/8 " Seat height: 18 1/2 "',
         2990,
-        200),
+        3),
 
         ('Sectional, 5-seat, with chaise / Grann /wood',
         'https://www.ikea.com/us/en/images/products/morabo-sectional-5-seat-with-chaise-grann-bomstad-gray-green-wood__0816184_pe773137_s5.jpg?f=s',
@@ -90,7 +90,7 @@ INSERT INTO item (item_name, item_image,item_overview, item_details, item_measur
         'Seat cushions filled with high-resilience foam and polyester fiber wadding provide great seating comfort. These wooden legs give Morabo sofa and armchair a warm and natural look. The contact surfaces are covered with grann a soft, smooth and strong grain leather with natural variations. Other surfaces have bomstad, a coated fabric that has a similar look and feel to leather. Removable armrests make it easy to add on a chaise lounge',
         'width: 110 1/4 " Height: 32 5/8 " Min. depth: 37 3/8 " Max. depth: 64 1/8 " Min. seat depth: 23 5/8 " Max. seat depth: 48 7/8 " Seat height: 17 3/4 "',
         4580,
-        1500
+        2
         ),
 
         ('Sofa with chaise, Gunnared beige',
@@ -99,7 +99,7 @@ INSERT INTO item (item_name, item_image,item_overview, item_details, item_measur
         'Enjoy the super comfy kivik sofa with deep seat cushions made of pocket springs high resilience foam and polyester fibers adding both firm support and relaxing softness. The size and depth of the sofa make it perfect for a nice nap or when the whole family is gathered. There is room for everyone and even extra seating on the wide armrests. The wide armrests have room for everything from your mobile phone to a bowl of movie snacks and very comfortable to lay your head on when you lie down on the sofa for a rest.',
         'width: 110 1/4 " Height: 32 5/8 " Min. depth: 37 3/8 " Max. depth: 64 1/8 " Min. seat depth: 23 5/8 " Max. seat depth: 48 7/8 " Seat height: 17 3/4 "',
         2100,
-        300),
+        2),
 
         ('Sofa with chaise, Vissle gray',
         'https://www.ikea.com/us/en/images/products/morabo-loveseat-grann-bomstad-golden-brown-wood__0815920_pe773107_s5.jpg?f=xxs',

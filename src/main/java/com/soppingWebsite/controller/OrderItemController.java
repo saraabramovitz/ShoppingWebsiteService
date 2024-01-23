@@ -21,8 +21,8 @@ public class OrderItemController {
     public ResponseEntity<?> createOrderItem(@RequestBody OrderItemRequest orderItemRequest) throws JsonProcessingException {
         try {
             return ResponseEntity.ok(orderItemService.createOrderItem(orderItemRequest));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -31,8 +31,8 @@ public class OrderItemController {
         try {
             orderItemService.updateOrderItemQuantity (orderItemQuantity);
             return ResponseEntity.ok("Order item updated successfully");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -42,8 +42,8 @@ public class OrderItemController {
         try {
             orderItemService.deleteOrderItemById(orderItemId);
             return ResponseEntity.ok("Order item deleted successfully");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -51,8 +51,8 @@ public class OrderItemController {
     public ResponseEntity<?> getOrderItemById(@PathVariable Long orderItemId){
         try {
             return ResponseEntity.ok(orderItemService.getOrderItemById(orderItemId));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -60,8 +60,8 @@ public class OrderItemController {
     public ResponseEntity<?> getOrderItemsByOrderId(@PathVariable Long orderId){
         try {
             return ResponseEntity.ok(orderItemService.getOrderItemsByOrderId(orderId));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -70,8 +70,8 @@ public class OrderItemController {
     public ResponseEntity<?> getOrderItemsByTempOrder(@PathVariable Long userId){
         try {
             return ResponseEntity.ok(orderItemService.getOrderItemsByTempOrder(userId));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 

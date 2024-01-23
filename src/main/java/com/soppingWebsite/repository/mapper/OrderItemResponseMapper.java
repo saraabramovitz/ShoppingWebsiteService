@@ -19,7 +19,11 @@ public class OrderItemResponseMapper implements RowMapper<OrderItemResponse> {
                 rs.getLong("item_id"),
                 rs.getString("item_name"),
                 rs.getString("item_image"),
+                rs.getString("item_overview"),
+                rs.getString("item_details"),
+                rs.getString("item_measurements"),
                 rs.getDouble("price"),
+                rs.getLong("stock"),
                 rs.getInt("quantity")
         );
 

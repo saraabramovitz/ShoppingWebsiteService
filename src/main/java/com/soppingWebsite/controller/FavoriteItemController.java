@@ -19,11 +19,11 @@ public class FavoriteItemController {
 
     @PostMapping("/create")
     @CrossOrigin
-    public ResponseEntity<?> createFavoriteItem(@RequestBody FavoriteItem favoriteItem) throws JsonProcessingException {
+    public ResponseEntity<?> createFavoriteItem(@RequestBody FavoriteItem favoriteItem) throws Exception {
         try {
             return ResponseEntity.ok(favoriteItemService.createFavoriteItem(favoriteItem));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -33,8 +33,8 @@ public class FavoriteItemController {
         try {
             favoriteItemService.deleteFavoriteItem(favoriteItemId);
             return ResponseEntity.ok("Favorite item deleted successfully");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -43,8 +43,8 @@ public class FavoriteItemController {
         try {
             favoriteItemService.deleteFavoriteItemByUserId(userId);
             return ResponseEntity.ok("Favorite items of user " + userId + " have been deleted successfully");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -52,8 +52,8 @@ public class FavoriteItemController {
     public ResponseEntity<?> getAllFavoriteItemsByUserId(@PathVariable Long userId){
         try {
             return ResponseEntity.ok(favoriteItemService.getAllFavoriteItemsByUserId(userId));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 

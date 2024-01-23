@@ -78,17 +78,9 @@ public class ItemRepositoryImpl implements ItemRepository {
         String sql = "SELECT * FROM " + ITEM_TABLE_NAME + " WHERE LOWER(item_name) LIKE LOWER(?)";
         String lowerSearchText = "%" + searchText.toLowerCase() + "%";
         System.out.println("Search Text: " + lowerSearchText);
-
         List<Item> items = jdbcTemplate.query(sql, itemMapper, lowerSearchText);
-
-        for (Item item : items) {
-            System.out.println("Item Name: " + item.getItemName());
-        }
-
         return items;
     }
-
-
 
 
 }

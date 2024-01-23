@@ -13,31 +13,32 @@ public class UserServiceImpl implements UserService{
     UserRepository userRepository;
 
     @Autowired
+    FavoriteItemService favoriteItemService;
+    @Autowired
     OrderService orderService;
 
     @Override
     public void createUser(CustomUserRequest customUserRequest) throws Exception {
         CustomUser existingUser = userRepository.findUserByUsername(customUserRequest.getUsername());
         if(existingUser != null){
-            throw new Exception("Username " + customUserRequest.getUsername() + " is already taken");
+            throw new Exception("Username is already taken");
         }
         userRepository.createUser(customUserRequest.toCustomUser());
     }
 
     @Override
     public void deleteUserById(Long userId) {
-        if(userRepository.getUserById(userId) == null){
-            throw new IllegalArgumentException("CustomUser id does not exist.");
+        if(userRepository.getUserById(userId) != null){
+            orderService.deleteOrderByUserId(userId);
+            favoriteItemService.deleteFavoriteItemByUserId(userId);
+            userRepository.deleteUserById(userId);
+        } else {
+            throw new IllegalArgumentException("User does not exist");
         }
-        orderService.deleteOrderByUserId(userId);
-        userRepository.deleteUserById(userId);
     }
 
     @Override
     public CustomUser getUserById(Long userId) {
-        if(userRepository.getUserById(userId) == null){
-            throw new IllegalArgumentException("CustomUser id does not exist.");
-        }
         return userRepository.getUserById(userId);
     }
 

@@ -19,17 +19,14 @@ public class FavoriteItemServiceImpl implements FavoriteItemService {
     @Autowired
     UserService userService;
 
+
     @Override
-    public Long createFavoriteItem(FavoriteItem favoriteItem) {
-        if(favoriteItem.getFavoriteItemId() != null){
-            throw new IllegalArgumentException("Invalid id.");
-        }
-        System.out.println(userService.getUserById(favoriteItem.getUserId()));
+    public Long createFavoriteItem(FavoriteItem favoriteItem) throws Exception{
         if(userService.getUserById(favoriteItem.getUserId()) == null){
-            throw new IllegalArgumentException("CustomUser does not exist.");
+            throw new Exception("User does not exist");
         }
         if(itemService.getItemById(favoriteItem.getItemId()) == null){
-            throw new IllegalArgumentException("Item does not exist.");
+            throw new Exception("Item does not exist");
         }
         return favoriteItemRepository.createFavoriteItem(favoriteItem);
     }
@@ -46,10 +43,6 @@ public class FavoriteItemServiceImpl implements FavoriteItemService {
 
     @Override
     public FavoriteItemResponse getFavoriteItemById(Long favoriteItemId) {
-        if(favoriteItemRepository.getFavoriteItemById(favoriteItemId) == null){
-            throw new IllegalArgumentException("Favorite item does not exist.");
-        }
-
         return favoriteItemRepository.getFavoriteItemById(favoriteItemId);
     }
 

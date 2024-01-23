@@ -1,9 +1,6 @@
 package com.soppingWebsite.service;
 
-import com.soppingWebsite.model.Address;
-import com.soppingWebsite.model.Order;
-import com.soppingWebsite.model.OrderResponse;
-import com.soppingWebsite.model.ShippingAddress;
+import com.soppingWebsite.model.*;
 
 import java.util.List;
 
@@ -15,6 +12,6 @@ public interface OrderService {
     void deleteOrderByUserId (Long userId);
     OrderResponse getOrderById (Long orderId);
     List<OrderResponse> getOrdersByUserId (Long userId);
-    OrderResponse getTempOrderByUserId(Long userId);
+    OrderWithItemsResponse getTempOrderByUserId(Long userId);
 
 }

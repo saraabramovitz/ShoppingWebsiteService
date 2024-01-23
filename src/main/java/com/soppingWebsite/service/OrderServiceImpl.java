@@ -4,6 +4,7 @@ import com.soppingWebsite.model.*;
 import com.soppingWebsite.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Collections;
 
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Long createOrder(Long userId, Address shippingAddress) {
         if(userService.getUserById(userId) == null){
-            throw new IllegalArgumentException("CustomUser does not exist.");
+            throw new IllegalArgumentException("User does not exist.");
         }
         return orderRepository.createOrder(userId, shippingAddress);
     }
@@ -48,7 +49,7 @@ public class OrderServiceImpl implements OrderService{
         }
         for (OrderItemResponse orderItem : orderItemList) {
             if (orderItem.getQuantity() > itemService.getItemById(orderItem.getItemId()).getStock()) {
-                throw new IllegalArgumentException("Order item with id " + orderItem.getOrderItemId() + " is out of stock.");
+                throw new IllegalArgumentException("In order are items that are out of stock.");
             } else {
                 Item item = itemService.getItemById(orderItem.getItemId());
                 Long updateStock = item.getStock() - orderItem.getQuantity();
@@ -61,7 +62,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void deleteOrderById(Long orderId) {
         if(orderRepository.getOrderById(orderId) == null) {
-            throw new IllegalArgumentException("Order does not exist.");
+            throw new IllegalArgumentException("Order does not exist");
         }
         orderItemService.deleteOrderItemByOrderId(orderId);
         orderRepository.deleteOrderById(orderId);
@@ -70,7 +71,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void deleteOrderByUserId(Long userId) {
         if(userService.getUserById(userId) == null){
-            throw new IllegalArgumentException("CustomUser does not exist.");
+            throw new IllegalArgumentException("User does not exist.");
         }
         orderItemService.deleteOrderItemByUserId(userId);
         orderRepository.deleteOrderByUserId(userId);
@@ -87,16 +88,23 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public List<OrderResponse> getOrdersByUserId(Long userId) {
         if (userService.getUserById(userId) == null) {
-            throw new IllegalArgumentException("CustomUser does not exist.");
+            throw new IllegalArgumentException("User does not exist.");
         }
         return orderRepository.getOrdersByUserId(userId);
     }
 
     @Override
-    public OrderResponse getTempOrderByUserId(Long userId) {
+    public OrderWithItemsResponse getTempOrderByUserId(Long userId) {
         if(userService.getUserById(userId) == null){
-            throw new IllegalArgumentException("CustomUser does not exist.");
+            throw new IllegalArgumentException("User does not exist.");
         }
-        return orderRepository.getTempOrderByUserId(userId);
+        OrderResponse orderResponse = orderRepository.getTempOrderByUserId(userId);
+        if(orderResponse != null){
+            List<OrderItemResponse> orderItems = orderItemService.getOrderItemsByOrderId(orderResponse.getOrderId());
+            OrderWithItemsResponse order = new OrderWithItemsResponse(orderResponse, orderItems);
+            return order;
+        } else {
+            return new OrderWithItemsResponse(null, Collections.emptyList());
+        }
     }
 }

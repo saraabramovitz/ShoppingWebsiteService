@@ -71,23 +71,24 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
         }
     }
 
+
     @Override
     public List<OrderItemResponse> getOrderItemsByOrderId(Long orderId) {
         String sql = "SELECT " +
-                "order_item.order_item_id, " +
-                "order_item.item_id, " +
-                "order_item.user_order_id, " +
-                "item.item_name, " +
-                "item.item_image, " +
-                "item.item_overview, " +
-                "item.item_details, " +
-                "item.item_measurements, " +
-                "item.price, " +
-                "item.stock, " +
-                "order_item.quantity " +
-                "FROM " + ORDER_ITEM_TABLE_NAME + " " +
-                "JOIN item ON order_item.item_id = item.item_id " +
-                "WHERE order_item.user_order_id = ?;";
+            "order_item.order_item_id, " +
+            "order_item.item_id, " +
+            "order_item.user_order_id, " +
+            "item.item_name, " +
+            "item.item_image, " +
+            "item.item_overview, " +
+            "item.item_details, " +
+            "item.item_measurements, " +
+            "item.price, " +
+            "item.stock, " +
+            "order_item.quantity " +
+            "FROM " + ORDER_ITEM_TABLE_NAME + " " +
+            "JOIN item ON order_item.item_id = item.item_id " +
+            "WHERE order_item.user_order_id = ?;";
         return jdbcTemplate.query(sql, orderItemResponseMapper, orderId);
     }
 
@@ -139,4 +140,4 @@ public class OrderItemRepositoryImpl implements OrderItemRepository {
     }
 
 
-    }
+}

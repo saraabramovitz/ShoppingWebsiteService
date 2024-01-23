@@ -1,6 +1,7 @@
 package com.soppingWebsite.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.soppingWebsite.model.FavoriteItem;
 import com.soppingWebsite.model.Item;
 import com.soppingWebsite.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,14 @@ public class ItemController {
     @Autowired
     ItemService itemService;
 
+
     @PostMapping("/create")
-    public ResponseEntity<?> createItem(@RequestBody Item item) throws JsonProcessingException {
+    public ResponseEntity<?> createItem(@RequestBody Item item) throws Exception {
         try {
             itemService.createItem(item);
             return ResponseEntity.ok("Item created successfully");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -31,8 +33,8 @@ public class ItemController {
         try {
             itemService.updateItem(item);
             return ResponseEntity.ok("Item updated successfully");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -41,8 +43,8 @@ public class ItemController {
         try {
             itemService.deleteItemById(itemId);
             return ResponseEntity.ok("Item deleted successfully");
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -50,8 +52,8 @@ public class ItemController {
     public ResponseEntity<?> getItemById(@PathVariable Long itemId){
         try {
             return ResponseEntity.ok(itemService.getItemById(itemId));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
@@ -59,21 +61,19 @@ public class ItemController {
     public ResponseEntity<?> getAllItems(){
         try {
             return ResponseEntity.ok(itemService.getAllItems());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
 
     @GetMapping("/containingSearchText/{searchText}")
-    @CrossOrigin
     public ResponseEntity<?> getItemsContainingSearchText(@PathVariable String searchText){
         try {
             return ResponseEntity.ok(itemService.getItemsContainingSearchText(searchText));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
     }
-
 
 
 }

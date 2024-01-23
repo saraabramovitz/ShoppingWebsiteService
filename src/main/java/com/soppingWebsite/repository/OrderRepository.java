@@ -1,9 +1,6 @@
 package com.soppingWebsite.repository;
 
-import com.soppingWebsite.model.Address;
-import com.soppingWebsite.model.Order;
-import com.soppingWebsite.model.OrderResponse;
-import com.soppingWebsite.model.ShippingAddress;
+import com.soppingWebsite.model.*;
 
 import java.util.List;
 
