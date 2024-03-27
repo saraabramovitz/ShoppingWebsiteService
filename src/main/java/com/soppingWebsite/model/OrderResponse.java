@@ -14,6 +14,8 @@ public class OrderResponse {
     private LocalDate orderDate;
     private OrderStatus orderStatus;
 
+    OrderResponse(){}
+
     public OrderResponse(Long orderId, Long userId, String city, String street, Integer buildingNumber, Integer apartment, LocalDate orderDate, OrderStatus orderStatus) {
         this.orderId = orderId;
         this.userId = userId;

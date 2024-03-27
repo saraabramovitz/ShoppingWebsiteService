@@ -10,3 +10,4 @@ public class ShoppingWebsiteService {
 		SpringApplication.run(ShoppingWebsiteService.class, args);
 	}
 }
+

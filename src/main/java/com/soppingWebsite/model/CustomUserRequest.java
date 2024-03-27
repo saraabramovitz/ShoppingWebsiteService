@@ -9,6 +9,8 @@ public class CustomUserRequest {
     private String username;
     private String password;
 
+    public CustomUserRequest(){}
+
     public CustomUserRequest(String firstName, String lastName, String email, String phone, Address address, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

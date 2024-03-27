@@ -5,6 +5,8 @@ public class OrderItemQuantity {
     Long orderItemId;
     Integer quantity;
 
+    public OrderItemQuantity(){}
+
     public OrderItemQuantity(Long orderItemId, Integer quantity) {
         this.orderItemId = orderItemId;
         this.quantity = quantity;

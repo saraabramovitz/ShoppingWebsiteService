@@ -6,6 +6,8 @@ public class OrderWithItemsResponse {
     OrderResponse order;
     List<OrderItemResponse> orderItems;
 
+    public OrderWithItemsResponse(){}
+
     public OrderWithItemsResponse(OrderResponse order, List<OrderItemResponse> orderItems) {
         this.order = order;
         this.orderItems = orderItems;
